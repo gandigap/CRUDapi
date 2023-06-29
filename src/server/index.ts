@@ -1,18 +1,43 @@
-import { createServer, IncomingMessage, ServerResponse } from 'http';
+import { createServer } from 'http';
+import { METHODS, STATUSES } from '../constants';
+import getController from './controllers/get-controller';
+import postController from './controllers/post-controller';
+import deleteController from './controllers/delete-controller';
+import putController from './controllers/put-controller';
 
-const host = 'localhost';
-const port = 4000;
+const HOST = 'localhost';
+const PORT = 4000;
 
-const requestListener = (request: IncomingMessage, response: ServerResponse) => {
-  console.log(request);
-  response.writeHead(200);
-  response.end('Start HTTP server');
-};
+const server = createServer();
 
-const server = createServer(requestListener);
+server.on('request', (request, response) => {
+  const {
+    GET, POST, PUT, DELETE,
+  } = METHODS;
 
-server.listen(port, host, ()=> {
-  console.log(`Server is running on http://${host}:${port}`);
+  switch (request.method) {
+    case GET:
+      getController(request, response);
+      break;
+    case POST:
+      postController(request, response);
+      break;
+    case PUT:
+      putController(request, response);
+      break;
+    case DELETE:
+      deleteController(request, response);
+      break;
+    default:
+      // Send response for requests with no other response
+      response.statusCode = STATUSES.BAD_REQUEST;
+      response.write('No Response');
+      response.end('Start HTTP server');
+  }
+});
+
+server.listen(PORT, HOST, () => {
+  process.stdout.write(`Server is running on http://${HOST}:${PORT}`);
 });
 
 export default server;
