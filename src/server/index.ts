@@ -1,4 +1,5 @@
 import { createServer } from 'http';
+
 import { METHODS, STATUSES } from '../constants';
 import getRouter from './routers/get-router';
 import postRouter from './routers/post-router';
@@ -6,9 +7,9 @@ import deleteRouter from './routers/delete-router';
 import putRouter from './routers/put-router';
 import createResponse from '../utils/create-response';
 import messages from '../constants/messages';
+import { PORT } from '../config';
 
 const HOST = 'localhost';
-const PORT = 4000;
 const server = createServer();
 
 server.on('request', async (request, response) => {
@@ -50,7 +51,7 @@ server.on('request', async (request, response) => {
   }
 });
 
-server.listen(PORT, HOST, () => {
+server.listen(PORT as unknown as number, HOST, () => {
   process.stdout.write(`Server is running on http://${HOST}:${PORT}`);
 });
 

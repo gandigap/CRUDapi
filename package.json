@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "cross-env NODE_ENV=development nodemon --exec ts-node --experimentalSpecifierResolution node src/index.ts",
+    "start:prod": "cross-env NODE_ENV=production tsc && node --experimental-specifier-resolution=node build/index.js",
     "lint": "eslint --ext .ts --fix src/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -43,6 +44,7 @@
     "typescript": "^5.1.5"
   },
   "dependencies": {
+    "dotenv": "^16.3.1",
     "uuid": "^9.0.0"
   }
 }
