@@ -1,38 +1,52 @@
 import { createServer } from 'http';
 import { METHODS, STATUSES } from '../constants';
-import getController from './controllers/get-controller';
-import postController from './controllers/post-controller';
-import deleteController from './controllers/delete-controller';
-import putController from './controllers/put-controller';
+import getRouter from './routers/get-router';
+import postRouter from './routers/post-router';
+import deleteRouter from './routers/delete-router';
+import putRouter from './routers/put-router';
+import createResponse from '../utils/create-response';
+import messages from '../constants/messages';
 
 const HOST = 'localhost';
 const PORT = 4000;
-
 const server = createServer();
 
-server.on('request', (request, response) => {
+server.on('request', async (request, response) => {
   const {
     GET, POST, PUT, DELETE,
   } = METHODS;
-
-  switch (request.method) {
-    case GET:
-      getController(request, response);
-      break;
-    case POST:
-      postController(request, response);
-      break;
-    case PUT:
-      putController(request, response);
-      break;
-    case DELETE:
-      deleteController(request, response);
-      break;
-    default:
-      // Send response for requests with no other response
-      response.statusCode = STATUSES.BAD_REQUEST;
-      response.write('No Response');
-      response.end('Start HTTP server');
+  try {
+    switch (request.method) {
+      case GET:
+        getRouter(request, response);
+        break;
+      case POST:
+        await postRouter(request, response);
+        break;
+      case PUT:
+        await putRouter(request, response);
+        break;
+      case DELETE:
+        await deleteRouter(request, response);
+        break;
+      default:
+        response.statusCode = STATUSES.BAD_REQUEST;
+        response.write('No Response');
+        response.end('Start HTTP server');
+    }
+  } catch (error: any) {
+    switch (error.message) {
+      case messages.idIsInvalid:
+      case messages.bodyInvalid:
+        createResponse(response, STATUSES.BAD_REQUEST, error.message);
+        break;
+      case messages.userDoesNotExist:
+        createResponse(response, STATUSES.NOT_FOUND, error.message);
+        break;
+      default:
+        createResponse(response, STATUSES.BAD_REQUEST, error.message);
+        break;
+    }
   }
 });
 
