@@ -4,6 +4,27 @@
 
 Your task is to implement simple CRUD API using in-memory database underneath.
 
+
+## First of all need install dependencies
+```sh
+npm install
+```
+## Start development build
+```sh
+npm run start:dev
+```
+
+## Start production build
+```sh
+npm run start:prod
+```
+
+## Start test
+```sh
+npm run test
+```
+
+
 ## Technical requirements
 
 - Task can be implemented on Javascript or Typescript
