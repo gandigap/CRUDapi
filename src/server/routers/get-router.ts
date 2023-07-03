@@ -22,7 +22,7 @@ const getRouter = (request: IncomingMessage, response: ServerResponse) => {
       break;
     }
     default:
-      createResponse(response, STATUSES.BAD_REQUEST, `Request is invalid: ${request.url}`);
+      createResponse(response, STATUSES.NOT_FOUND, `Non-existing endpoint: ${request.url}`);
       break;
   }
 };

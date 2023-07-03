@@ -9,7 +9,6 @@ const getRequestBody = (request: IncomingMessage): Promise<User> => (
       request.on('data', (chunk: string) => {
         body += chunk.toString();
       });
-
       request.on('end', () => {
         resolve(body ? JSON.parse(body) : {});
       });

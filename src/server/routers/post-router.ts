@@ -16,9 +16,7 @@ const postRouter = async (request: IncomingMessage, response: ServerResponse) =>
       break;
     }
     default:
-      response.statusCode = STATUSES.BAD_REQUEST;
-      response.write(`Request is invalid: ${request.url}`);
-      response.end();
+      createResponse(response, STATUSES.NOT_FOUND, `Non-existing endpoint: ${request.url}`);
   }
 };
 

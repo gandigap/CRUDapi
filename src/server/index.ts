@@ -45,7 +45,7 @@ server.on('request', async (request, response) => {
         createResponse(response, STATUSES.NOT_FOUND, error.message);
         break;
       default:
-        createResponse(response, STATUSES.BAD_REQUEST, error.message);
+        createResponse(response, STATUSES.INTERNAL_SERVER_ERROR, error.message);
         break;
     }
   }
