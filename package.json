@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "cross-env NODE_ENV=development nodemon --exec ts-node --experimentalSpecifierResolution node src/index.ts",
+    "start:multi": "cross-env NODE_ENV=development MULTI=true PORT=4000 nodemon --exec ts-node --experimentalSpecifierResolution node src/loadBalancer.ts",
     "start:prod": "cross-env NODE_ENV=production tsc && node --experimental-specifier-resolution=node build/index.js",
     "lint": "eslint --ext .ts --fix src/",
     "test": "jest --detectOpenHandles"

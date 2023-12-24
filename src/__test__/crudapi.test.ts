@@ -1,9 +1,9 @@
 import supertest from 'supertest';
 import { validate as uuidValidate } from 'uuid';
 
-import server from '../server';
-import { END_POINT, STATUSES } from '../constants';
+import { DEFAULT_END_POINT, END_POINT, STATUSES } from '../constants';
 import { UserData } from '../types';
+import server from '..';
 
 const testUser :UserData = {
   username: 'John Doe',
@@ -15,7 +15,7 @@ afterEach(async () => server.close());
 
 describe('Get all users with status 200 (OK)', () => {
   it('should return empty array', async () => {
-    const res = await supertest(server).get(`/${END_POINT}`).send();
+    const res = await supertest(server).get(DEFAULT_END_POINT).send();
 
     expect(res.statusCode).toBe(STATUSES.OK);
     expect(res.body).toEqual([]);
@@ -24,7 +24,7 @@ describe('Get all users with status 200 (OK)', () => {
 
 describe('Create a new user', () => {
   it('should create a new user with status 201 (CREATED) and correct id in response ', async () => {
-    const res = await supertest(server).post(`/${END_POINT}`).send(testUser);
+    const res = await supertest(server).post(DEFAULT_END_POINT).send(testUser);
     const { id } = res.body;
     testUser.id = id;
 
@@ -44,7 +44,7 @@ describe('Get user by id', () => {
 
 describe('Remove user', () => {
   it('should delete user with status NO CONTENT', async () => {
-    const createRes = await supertest(server).post(`/${END_POINT}`).send(testUser);
+    const createRes = await supertest(server).post(DEFAULT_END_POINT).send(testUser);
     const { id } = createRes.body;
 
     const deleteRes = await supertest(server).delete(`/${END_POINT}/${id}`).send();
